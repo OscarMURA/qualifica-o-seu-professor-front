@@ -97,7 +97,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-4">
-      <Card className="w-full max-w-md shadow-xl bg-blue-100/70 backdrop-blur-sm">
+      <Card className="w-full max-w-md shadow-xl bg-white">
         <CardHeader>
           <CardTitle className="text-center text-slate-800">Iniciar Sesión</CardTitle>
           <p className="text-center text-slate-600 mt-2">

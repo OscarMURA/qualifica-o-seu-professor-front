@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { authService } from "@/lib/auth";
-import { useAuth } from "@/context/useAuth";
-import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import { useAuth } from "@/context/useAuth";
+import { authService } from "@/lib/auth";
 import type { RegisterData } from "@/types";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
 
 export default function SignUpPage() {
   const router = useRouter();
-  const setAuth = useAuth((state) => state.setAuth);
+  const _setAuth = useAuth((state) => state.setAuth);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState<RegisterData>({
@@ -22,13 +22,40 @@ export default function SignUpPage() {
     role: "student",
   });
 
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
 
+  // Calcular el progreso del formulario
+  const progress = useMemo(() => {
+    let completed = 0;
+    const totalFields = 4; // name, email, password, confirmPassword
+
+    if (formData.name.trim().length > 0) completed++;
+    if (formData.email.trim().length > 0) completed++;
+    if (formData.password.length >= 6) completed++;
+    if (confirmPassword.length > 0 && confirmPassword === formData.password) completed++;
+
+    return Math.round((completed / totalFields) * 100);
+  }, [formData.name, formData.email, formData.password, confirmPassword]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
+
+    // Validar que las contraseñas coincidan
+    if (formData.password !== confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    // Validar longitud mínima de contraseña
+    if (formData.password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
+
+    setIsLoading(true);
     setSuccess(false);
 
     try {
@@ -58,7 +85,7 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-4">
-      <Card className="w-full max-w-md shadow-xl bg-blue-100/70 backdrop-blur-sm">
+      <Card className="w-full max-w-md shadow-xl bg-white">
         <CardHeader>
           <CardTitle className="text-center text-slate-800">Crear Cuenta</CardTitle>
           <p className="text-center text-slate-600 mt-2">
@@ -105,6 +132,20 @@ export default function SignUpPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Barra de progreso */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600 font-medium">Progreso del registro</span>
+                  <span className="text-slate-700 font-semibold">{progress}%</span>
+                </div>
+                <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-slate-600 to-slate-700 rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                </div>
+              </div>
+
               {error && (
                 <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
                   {error}
@@ -145,10 +186,43 @@ export default function SignUpPage() {
                 minLength={6}
               />
 
+              <Input
+                label="Confirmar Contraseña"
+                type="password"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                disabled={isLoading}
+                minLength={6}
+              />
+
+              {/* Indicador visual de coincidencia de contraseñas */}
+              {confirmPassword.length > 0 && (
+                <div className="flex items-center gap-2 text-sm">
+                  {formData.password === confirmPassword ? (
+                    <>
+                      <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-green-600 font-medium">Las contraseñas coinciden</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      <span className="text-red-600 font-medium">Las contraseñas no coinciden</span>
+                    </>
+                  )}
+                </div>
+              )}
+
               <Button
                 type="submit"
                 className="w-full"
-                disabled={isLoading}
+                disabled={isLoading || progress < 100}
                 size="lg"
               >
                 {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
