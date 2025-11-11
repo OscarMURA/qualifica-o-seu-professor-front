@@ -22,22 +22,28 @@ export default function SignUpPage() {
     role: "student",
   });
 
+  const [success, setSuccess] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    setSuccess(false);
 
     try {
       const response = await authService.register(formData);
-      const token = response.token || response.accessToken || "";
-      setAuth(response.user, token);
-      router.push("/");
+      setSuccess(true);
+      setRegisteredEmail(response.user.email);
     } catch (err) {
       const errorMessage = 
         err instanceof Error && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
+          ? (err as { response?: { data?: { message?: string | string[] } } }).response?.data?.message
           : undefined;
-      setError(errorMessage || "Error al registrar. Por favor, intenta de nuevo.");
+      const message = Array.isArray(errorMessage) 
+        ? errorMessage.join(", ") 
+        : errorMessage;
+      setError(message || "Error al registrar. Por favor, intenta de nuevo.");
     } finally {
       setIsLoading(false);
     }
@@ -60,66 +66,105 @@ export default function SignUpPage() {
           </p>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
-                {error}
+          {success ? (
+            <div className="space-y-4">
+              <div className="p-4 rounded-lg bg-green-50 border border-green-200 text-green-800">
+                <h3 className="font-semibold mb-2">Cuenta creada exitosamente</h3>
+                <p className="text-sm mb-3">
+                  Hemos enviado un enlace de verificación a <strong>{registeredEmail}</strong>
+                </p>
+                <p className="text-sm">
+                  Por favor, revisa tu correo electrónico y haz clic en el enlace para verificar tu cuenta antes de iniciar sesión.
+                </p>
               </div>
-            )}
-
-            <Input
-              label="Nombre Completo"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Juan Pérez"
-              required
-              disabled={isLoading}
-            />
-
-            <Input
-              label="Email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="tu@email.com"
-              required
-              disabled={isLoading}
-            />
-
-            <Input
-              label="Contraseña"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              required
-              disabled={isLoading}
-              minLength={6}
-            />
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-              size="lg"
-            >
-              {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
-            </Button>
-
-            <div className="text-center text-sm text-slate-600">
-              ¿Ya tienes cuenta?{" "}
-              <Link
-                href="/login"
-                className="text-blue-600 hover:text-blue-700 font-medium underline-offset-2 hover:underline"
-              >
-                Inicia sesión aquí
-              </Link>
+              <div className="space-y-2">
+                <Button
+                  onClick={() => router.push("/login")}
+                  className="w-full"
+                  size="lg"
+                >
+                  Ir a Iniciar Sesión
+                </Button>
+                <div className="text-center text-sm text-slate-600">
+                  ¿No recibiste el correo?{" "}
+                  <button
+                    onClick={async () => {
+                      try {
+                        await authService.resendVerification(registeredEmail);
+                        alert("Correo de verificación reenviado. Por favor, revisa tu bandeja de entrada.");
+                      } catch (err) {
+                        alert("Error al reenviar el correo. Por favor, intenta más tarde.");
+                      }
+                    }}
+                    className="text-blue-600 hover:text-blue-700 font-medium underline-offset-2 hover:underline"
+                  >
+                    Reenviar correo
+                  </button>
+                </div>
+              </div>
             </div>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+                  {error}
+                </div>
+              )}
+
+              <Input
+                label="Nombre Completo"
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Juan Pérez"
+                required
+                disabled={isLoading}
+              />
+
+              <Input
+                label="Email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="tu@email.com"
+                required
+                disabled={isLoading}
+              />
+
+              <Input
+                label="Contraseña"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                required
+                disabled={isLoading}
+                minLength={6}
+              />
+
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+                size="lg"
+              >
+                {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
+              </Button>
+
+              <div className="text-center text-sm text-slate-600">
+                ¿Ya tienes cuenta?{" "}
+                <Link
+                  href="/login"
+                  className="text-blue-600 hover:text-blue-700 font-medium underline-offset-2 hover:underline"
+                >
+                  Inicia sesión aquí
+                </Link>
+              </div>
+            </form>
+          )}
         </CardContent>
       </Card>
     </div>
