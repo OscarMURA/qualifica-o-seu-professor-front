@@ -1,6 +1,12 @@
 import { api } from "./api";
 import { API_CONFIG } from "@/config/api";
-import type { LoginCredentials, RegisterData, AuthResponse, RegisterResponse, VerifyEmailResponse } from "@/types";
+import type {
+  LoginCredentials,
+  RegisterData,
+  AuthResponse,
+  RegisterResponse,
+  VerifyEmailResponse,
+} from "@/types";
 
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
@@ -12,9 +18,17 @@ export const authService = {
   },
 
   async register(data: RegisterData): Promise<RegisterResponse> {
+    const payload = {
+      email: data.email,
+      password: data.password,
+      // El backend espera `name`, no `fullName`
+      name: data.name ?? data.fullName ?? "",
+      ...(data.role ? { role: data.role } : {}),
+    };
+
     const response = await api.post<RegisterResponse>(
       API_CONFIG.ENDPOINTS.AUTH.REGISTER,
-      data
+      payload
     );
     return response.data;
   },
