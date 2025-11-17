@@ -30,12 +30,23 @@ export default function SettingsPage() {
     setSuccess({ ...success, profile: "" });
 
     try {
+      const emailChanged = profileForm.email !== user.email;
+      
       const response = await api.patch(`/users/${user.id}`, {
         name: profileForm.name,
         email: profileForm.email,
       });
+      
       updateUser(response.data);
-      setSuccess({ ...success, profile: "Perfil actualizado exitosamente" });
+      
+      if (emailChanged) {
+        setSuccess({ 
+          ...success, 
+          profile: "Perfil actualizado. Se ha enviado un correo de verificación a tu nuevo email. Por favor verifica tu correo." 
+        });
+      } else {
+        setSuccess({ ...success, profile: "Perfil actualizado exitosamente" });
+      }
     } catch (err: any) {
       setErrors({ ...errors, profile: err.response?.data?.message || "Error al actualizar el perfil" });
     } finally {

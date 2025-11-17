@@ -38,9 +38,10 @@ export default function AdminUsersPage() {
     try {
       let response;
       if (searchValue.includes("@")) {
-        response = await api.get<User>(`/users/email/${searchValue}`);
+        const encodedEmail = encodeURIComponent(searchValue.trim());
+        response = await api.get<User>(`/users/email/${encodedEmail}`);
       } else {
-        response = await api.get<User>(`/users/${searchValue}`);
+        response = await api.get<User>(`/users/${searchValue.trim()}`);
       }
       
       setSelectedUser(response.data);
@@ -77,8 +78,11 @@ export default function AdminUsersPage() {
       }
 
       await api.patch(`/users/${selectedUser.id}`, updateData);
-      setSuccess("Usuario actualizado exitosamente");
+      setSuccess("Usuario actualizado exitosamente. Como eres admin, no se requiere verificación de email.");
       setEditForm({ ...editForm, password: "" });
+      
+      const updatedUser = { ...selectedUser, ...updateData };
+      setSelectedUser(updatedUser);
     } catch (err: any) {
       setError(err.response?.data?.message || "No se pudo actualizar el usuario");
     } finally {
