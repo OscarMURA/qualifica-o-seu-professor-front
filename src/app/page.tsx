@@ -58,7 +58,7 @@ export default function Home() {
                       <h3 className="text-lg font-semibold text-slate-800">Profesores</h3>
                       <p className="text-slate-600 text-sm">Explora y califica a tus profesores</p>
                     </div>
-                    <Button onClick={() => router.push("/profesores")} size="sm">
+                    <Button onClick={() => router.push("/professors")} size="sm">
                       Ver
                     </Button>
                   </div>

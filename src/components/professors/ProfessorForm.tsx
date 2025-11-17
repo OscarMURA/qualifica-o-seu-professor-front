@@ -107,10 +107,19 @@ export default function ProfessorForm({
   };
 
   const validateForm = (): string | null => {
-    if (!formData.name.trim()) return "El nombre del profesor es requerido";
-    if (formData.name.trim().length < 2) return "El nombre debe tener al menos 2 caracteres";
-    if (formData.name.trim().length > 120) return "El nombre no puede exceder 120 caracteres";
-    if (formData.department && formData.department.length > 120) return "El departamento no puede exceder 120 caracteres";
+    const name = formData.name.trim();
+    const department = formData.department.trim();
+
+    if (!name) return "El nombre del profesor es requerido";
+    if (name.length < 2) return "El nombre debe tener al menos 2 caracteres";
+    if (name.length > 120) return "El nombre no puede exceder 120 caracteres";
+
+    if (!department) return "El departamento es requerido";
+    if (department.length < 2) return "El departamento debe tener al menos 2 caracteres";
+    if (department.length > 100) return "El departamento no puede exceder 100 caracteres";
+
+    if (!formData.universityId) return "La universidad es requerida";
+
     return null;
   };
 
@@ -130,8 +139,8 @@ export default function ProfessorForm({
       if (mode === "create") {
         const data: CreateProfessorData = {
           name: formData.name.trim(),
-          ...(formData.department?.trim() && { department: formData.department.trim() }),
-          ...(formData.universityId && { universityId: formData.universityId }),
+          department: formData.department.trim(),
+          university: formData.universityId,
         };
         const professor = await professorsService.create(data);
         setFormData({ name: "", department: "", universityId: "" });
@@ -144,9 +153,18 @@ export default function ProfessorForm({
         }
 
         const updates: UpdateProfessorData = {};
-        if (formData.name.trim() !== initialData.name) updates.name = formData.name.trim();
-        if (formData.department.trim() !== initialData.department) updates.department = formData.department.trim() || null;
-        if (formData.universityId !== initialData.universityId) updates.universityId = formData.universityId || null;
+        const name = formData.name.trim();
+        const department = formData.department.trim();
+
+        if (name !== initialData.name) {
+          updates.name = name;
+        }
+        if (department !== initialData.department) {
+          updates.department = department;
+        }
+        if (formData.universityId !== initialData.universityId) {
+          updates.university = formData.universityId;
+        }
 
         if (Object.keys(updates).length === 0) {
           setError("No se detectaron cambios");
@@ -204,7 +222,7 @@ export default function ProfessorForm({
           />
 
           <Input
-            label="Departamento"
+            label="Departamento *"
             type="text"
             name="department"
             value={formData.department}
@@ -215,12 +233,13 @@ export default function ProfessorForm({
           />
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Universidad</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Universidad *</label>
             <select
               name="universityId"
               value={formData.universityId}
               onChange={handleChange}
               disabled={submitting || loadingUniversities}
+              required
               className="flex h-11 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
             >
               <option value="">Sin asignar</option>

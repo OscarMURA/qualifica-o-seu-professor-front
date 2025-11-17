@@ -31,7 +31,7 @@ export default function SignUpPage() {
     let completed = 0;
     const totalFields = 4; // name, email, password, confirmPassword
 
-    if (formData.name.trim().length > 0) completed++;
+    if ((formData.name ?? "").trim().length > 0) completed++;
     if (formData.email.trim().length > 0) completed++;
     if (formData.password.length >= 6) completed++;
     if (confirmPassword.length > 0 && confirmPassword === formData.password) completed++;

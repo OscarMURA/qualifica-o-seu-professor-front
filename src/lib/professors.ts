@@ -10,20 +10,76 @@ export interface CreateProfessorCommentData {
 
 export interface CreateProfessorData {
   name: string;
-  department?: string;
-  universityId?: string | null;
+  department: string;
+  university: string;
 }
 
 export interface UpdateProfessorData {
   name?: string;
-  department?: string | null;
-  universityId?: string | null;
+  department?: string;
+  university?: string;
 }
+
+export interface ProfessorRating {
+  average: number;
+  count: number;
+}
+
+interface CommentFromApi {
+  id: string;
+  content: string;
+  rating: number | null;
+  professorId: string;
+  studentId: string;
+  student?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+const mapCommentFromApi = (comment: CommentFromApi): CommentItem => ({
+  id: comment.id,
+  content: comment.content,
+  rating: comment.rating ?? 0,
+  professorId: comment.professorId,
+  userId: comment.studentId,
+  author: comment.student
+    ? {
+        id: comment.student.id,
+        name: comment.student.name,
+        email: comment.student.email,
+      }
+    : undefined,
+  createdAt: comment.createdAt,
+  updatedAt: comment.updatedAt,
+});
 
 export const professorsService = {
   async list(): Promise<Professor[]> {
     const res = await api.get<Professor[]>(API_CONFIG.ENDPOINTS.PROFESSORS);
-    return res.data;
+    const professors = res.data;
+
+    // Cargar rating promedio para cada profesor
+    try {
+      const ratings = await Promise.all(
+        professors.map((professor) =>
+          professorsService
+            .getRating(professor.id)
+            .catch(() => ({ average: 0, count: 0 }))
+        )
+      );
+
+      return professors.map((professor, index) => ({
+        ...professor,
+        averageRating: ratings[index]?.average ?? 0,
+      }));
+    } catch {
+      // Si falla el endpoint de rating, devolver sin modificar
+      return professors;
+    }
   },
 
   async getById(id: string): Promise<Professor> {
@@ -45,16 +101,27 @@ export const professorsService = {
     await api.delete(`${API_CONFIG.ENDPOINTS.PROFESSORS}/${id}`);
   },
 
-  async getComments(professorId: string): Promise<CommentItem[]> {
-    // Asumimos endpoint de consulta por query param
-    const res = await api.get<CommentItem[]>(`${API_CONFIG.ENDPOINTS.COMMENTS}`, {
-      params: { professorId },
-    });
+  async getRating(professorId: string): Promise<ProfessorRating> {
+    const res = await api.get<ProfessorRating>(
+      `${API_CONFIG.ENDPOINTS.COMMENTS}/professor/${professorId}/rating`
+    );
     return res.data;
   },
 
+  async getComments(professorId: string): Promise<CommentItem[]> {
+    const res = await api.get<CommentFromApi[]>(
+      `${API_CONFIG.ENDPOINTS.COMMENTS}/professor/${professorId}/comments`
+    );
+    return res.data.map(mapCommentFromApi);
+  },
+
   async addComment(data: CreateProfessorCommentData): Promise<CommentItem> {
-    const res = await api.post<CommentItem>(`${API_CONFIG.ENDPOINTS.COMMENTS}`, data);
-    return res.data;
+    const payload = {
+      content: data.content,
+      rating: data.rating,
+      professor: data.professorId,
+    };
+    const res = await api.post<CommentFromApi>(`${API_CONFIG.ENDPOINTS.COMMENTS}`, payload);
+    return mapCommentFromApi(res.data);
   },
 };

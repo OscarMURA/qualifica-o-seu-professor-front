@@ -115,7 +115,7 @@ export default function MyCommentsPage() {
           <Card>
             <CardContent className="text-center py-12">
               <p className="text-slate-600 mb-4">No has realizado ningún comentario todavía</p>
-              <Button onClick={() => router.push("/profesores")}>
+              <Button onClick={() => router.push("/professors")}>
                 Explorar Profesores
               </Button>
             </CardContent>

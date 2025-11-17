@@ -32,7 +32,7 @@ export default function ProfessorDetailPage() {
   const router = useRouter();
   const { isAuthenticated, user } = useAuth();
   const isAdmin = user?.role === "admin";
-  const id = useMemo(() => String(params?.id ?? ""), [params]);
+  const id = useMemo(() => String((params as any)?.id ?? ""), [params]);
 
   const [loading, setLoading] = useState(true);
   const [professor, setProfessor] = useState<Professor | null>(null);
@@ -65,9 +65,11 @@ export default function ProfessorDetailPage() {
     load();
   }, [id]);
 
-  const avg = professor?.averageRating ?? (comments.length
-    ? comments.reduce((acc, it) => acc + (it.rating ?? 0), 0) / comments.length
-    : 0);
+  const avg =
+    professor?.averageRating ??
+    (comments.length
+      ? comments.reduce((acc, it) => acc + (it.rating ?? 0), 0) / comments.length
+      : 0);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -109,6 +111,8 @@ export default function ProfessorDetailPage() {
     );
   }
 
+  const university = professor.university;
+
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
@@ -120,14 +124,34 @@ export default function ProfessorDetailPage() {
             </h1>
             {isAdmin && (
               <Link href={`/admin/professors/${professor.id}/edit`} className="self-start">
-                <Button variant="outline" size="sm">Editar</Button>
+                <Button variant="outline" size="sm">
+                  Editar
+                </Button>
               </Link>
             )}
           </div>
           <div className="flex flex-wrap items-center gap-3 text-slate-700">
             {professor.department && (
               <span className="inline-flex items-center gap-2 text-sm">
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
                 {professor.department}
               </span>
             )}
@@ -138,8 +162,8 @@ export default function ProfessorDetailPage() {
           </div>
         </div>
 
-        {/* University link if exists */}
-        {(professor.university || professor.universityId) && (
+        {/* Universidad */}
+        {(university || professor.universityId) && (
           <Card>
             <CardHeader>
               <CardTitle>Universidad</CardTitle>
@@ -148,16 +172,16 @@ export default function ProfessorDetailPage() {
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <div className="text-slate-800 font-medium">
-                    {professor.university?.name || "Ver universidad"}
+                    {university?.name || "Ver universidad"}
                   </div>
-                  {professor.university && (
+                  {university && (
                     <div className="text-slate-600 text-sm">
-                      {[professor.university.city, professor.university.country].filter(Boolean).join(", ")}
+                      {[university.city, university.country].filter(Boolean).join(", ")}
                     </div>
                   )}
                 </div>
                 <Link
-                  href={`/universities/${professor.university?.id || professor.universityId}`}
+                  href={`/universities/${university?.id || professor.universityId}`}
                   className="text-blue-600 hover:text-blue-700 font-medium"
                 >
                   Ver universidad
@@ -174,12 +198,14 @@ export default function ProfessorDetailPage() {
               <CardTitle>Acerca del profesor</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-700 leading-relaxed whitespace-pre-line">{professor.bio}</p>
+              <p className="text-slate-700 leading-relaxed whitespace-pre-line">
+                {professor.bio}
+              </p>
             </CardContent>
           </Card>
         )}
 
-        {/* Comments section */}
+        {/* Comments and form */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-4">
             <Card>
@@ -192,7 +218,10 @@ export default function ProfessorDetailPage() {
                 ) : (
                   <ul className="space-y-4">
                     {comments.map((c) => (
-                      <li key={c.id} className="border border-slate-200 rounded-lg p-4">
+                      <li
+                        key={c.id}
+                        className="border border-slate-200 rounded-lg p-4 bg-white"
+                      >
                         <div className="flex items-center justify-between mb-2">
                           <div className="text-sm text-slate-600">
                             {c.author?.name ?? "Anónimo"}
@@ -226,23 +255,45 @@ export default function ProfessorDetailPage() {
                 <CardContent>
                   <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Calificación</label>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                        Calificación
+                      </label>
                       <div className="flex items-center gap-2">
-                        <input
-                          type="range"
-                          min={1}
-                          max={5}
-                          step={1}
-                          value={rating}
-                          onChange={(e) => setRating(Number(e.target.value))}
-                          className="w-full"
-                        />
-                        <span className="w-8 text-center text-slate-700 font-medium">{rating}</span>
+                        <div className="flex items-center gap-1">
+                          {Array.from({ length: 5 }).map((_, index) => {
+                            const value = index + 1;
+                            const active = value <= rating;
+                            return (
+                              <button
+                                key={value}
+                                type="button"
+                                onClick={() => setRating(value)}
+                                className="p-0.5"
+                                aria-label={`Calificar con ${value} estrella${value > 1 ? "s" : ""}`}
+                              >
+                                <svg
+                                  className={`w-6 h-6 transition-colors ${
+                                    active ? "text-yellow-400" : "text-slate-300"
+                                  }`}
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.802 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.802-2.034a1 1 0 00-1.175 0l-2.802 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.95-.69l1.07-3.292z" />
+                                </svg>
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <span className="w-8 text-center text-slate-700 font-medium">
+                          {rating}
+                        </span>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">Comentario</label>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                        Comentario
+                      </label>
                       <textarea
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
@@ -279,3 +330,4 @@ export default function ProfessorDetailPage() {
     </div>
   );
 }
+
