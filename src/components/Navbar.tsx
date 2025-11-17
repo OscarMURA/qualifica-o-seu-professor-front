@@ -52,7 +52,7 @@ export default function Navbar() {
                   Profesores
                 </button>
                 <button
-                  onClick={() => navigateTo("/universidades")}
+                  onClick={() => navigateTo("/universities")}
                   className="text-slate-700 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Universidades
@@ -182,7 +182,7 @@ export default function Navbar() {
                 Profesores
               </button>
               <button
-                onClick={() => navigateTo("/universidades")}
+                onClick={() => navigateTo("/universities")}
                 className="text-slate-700 hover:text-blue-500 hover:bg-slate-100 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
               >
                 Universidades

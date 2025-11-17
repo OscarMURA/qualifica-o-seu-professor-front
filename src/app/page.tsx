@@ -75,7 +75,7 @@ export default function Home() {
                       <h3 className="text-lg font-semibold text-slate-800">Universidades</h3>
                       <p className="text-slate-600 text-sm">Descubre universidades y sus profesores</p>
                     </div>
-                    <Button onClick={() => router.push("/universidades")} size="sm">
+                    <Button onClick={() => router.push("/universities")} size="sm">
                       Ver
                     </Button>
                   </div>
