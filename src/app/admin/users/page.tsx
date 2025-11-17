@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/useAuth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -19,8 +19,13 @@ export default function AdminUsersPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!isAuthenticated || user?.role !== "admin") {
+      router.push("/");
+    }
+  }, [isAuthenticated, user, router]);
+
   if (!isAuthenticated || user?.role !== "admin") {
-    router.push("/");
     return null;
   }
 
@@ -92,6 +97,12 @@ export default function AdminUsersPage() {
 
   const handleDelete = async () => {
     if (!selectedUser) return;
+    
+    if (selectedUser.id === user?.id) {
+      setError("No puedes eliminar tu propia cuenta desde aquí. Usa la configuración de tu perfil.");
+      return;
+    }
+    
     if (!confirm(`¿Estás seguro de eliminar al usuario ${selectedUser.name}?`)) return;
 
     setLoading(true);

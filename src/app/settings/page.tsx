@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/useAuth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -18,8 +18,13 @@ export default function SettingsPage() {
   const [success, setSuccess] = useState({ profile: "", password: "" });
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
 
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, user, router]);
+
   if (!isAuthenticated || !user) {
-    router.push("/login");
     return null;
   }
 
@@ -30,23 +35,12 @@ export default function SettingsPage() {
     setSuccess({ ...success, profile: "" });
 
     try {
-      const emailChanged = profileForm.email !== user.email;
-      
       const response = await api.patch(`/users/${user.id}`, {
         name: profileForm.name,
-        email: profileForm.email,
       });
       
       updateUser(response.data);
-      
-      if (emailChanged) {
-        setSuccess({ 
-          ...success, 
-          profile: "Perfil actualizado. Se ha enviado un correo de verificación a tu nuevo email. Por favor verifica tu correo." 
-        });
-      } else {
-        setSuccess({ ...success, profile: "Perfil actualizado exitosamente" });
-      }
+      setSuccess({ ...success, profile: "Perfil actualizado exitosamente" });
     } catch (err: any) {
       setErrors({ ...errors, profile: err.response?.data?.message || "Error al actualizar el perfil" });
     } finally {
@@ -146,17 +140,11 @@ export default function SettingsPage() {
                   required
                   disabled={loading.profile}
                 />
-                <Input
-                  label="Email"
-                  type="email"
-                  value={profileForm.email}
-                  onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
-                  required
-                  disabled={loading.profile}
-                />
-                <Button type="submit" disabled={loading.profile}>
-                  {loading.profile ? "Guardando..." : "Actualizar Perfil"}
-                </Button>
+                <div>
+                  <label className="text-sm font-medium text-slate-700">Email</label>
+                  <p className="mt-1 text-slate-900 bg-slate-50 p-2 rounded border border-slate-200">{user.email}</p>
+                  <p className="text-xs text-slate-500 mt-1">Contacta a un administrador para cambiar tu email</p>
+                </div>
               </form>
             </CardContent>
           </Card>
