@@ -46,7 +46,7 @@ export default function Navbar() {
                   Inicio
                 </button>
                 <button
-                  onClick={() => navigateTo("/profesores")}
+                  onClick={() => navigateTo("/professors")}
                   className="text-slate-700 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Profesores
@@ -89,6 +89,18 @@ export default function Navbar() {
                   className="text-slate-700 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Inicio
+                </button>
+                <button
+                  onClick={() => navigateTo("/professors")}
+                  className="text-slate-700 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Profesores
+                </button>
+                <button
+                  onClick={() => navigateTo("/universities")}
+                  className="text-slate-700 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Universidades
                 </button>
                 <Button
                   onClick={() => navigateTo("/login")}
@@ -176,7 +188,7 @@ export default function Navbar() {
                 Inicio
               </button>
               <button
-                onClick={() => navigateTo("/profesores")}
+                onClick={() => navigateTo("/professors")}
                 className="text-slate-700 hover:text-blue-500 hover:bg-slate-100 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
               >
                 Profesores
@@ -210,6 +222,18 @@ export default function Navbar() {
                 className="text-slate-700 hover:text-blue-500 hover:bg-slate-100 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
               >
                 Inicio
+              </button>
+              <button
+                onClick={() => navigateTo("/professors")}
+                className="text-slate-700 hover:text-blue-500 hover:bg-slate-100 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
+              >
+                Profesores
+              </button>
+              <button
+                onClick={() => navigateTo("/universities")}
+                className="text-slate-700 hover:text-blue-500 hover:bg-slate-100 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
+              >
+                Universidades
               </button>
               <div className="pt-2 space-y-2">
                 <Button

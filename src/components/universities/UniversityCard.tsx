@@ -14,7 +14,7 @@ export default function UniversityCard({ university }: UniversityCardProps) {
   const isAdmin = user?.role === "admin";
 
   const getLocation = (): string => {
-    const parts = [];
+    const parts = [] as string[];
     if (university.city) parts.push(university.city);
     if (university.country) parts.push(university.country);
     return parts.length > 0 ? parts.join(", ") : "Ubicación no especificada";
@@ -22,6 +22,10 @@ export default function UniversityCard({ university }: UniversityCardProps) {
 
   const handleEdit = () => {
     router.push(`/universities/${university.id}/edit`);
+  };
+
+  const goToDetails = () => {
+    router.push(`/universities/${university.id}`);
   };
 
   return (
@@ -86,30 +90,38 @@ export default function UniversityCard({ university }: UniversityCardProps) {
               day: "numeric",
             })}
           </div>
-          {isAdmin && (
+          <div className="flex items-center gap-2">
             <button
-              onClick={handleEdit}
-              className="text-blue-500 hover:text-blue-700 transition-colors p-1 rounded hover:bg-blue-50"
-              title="Editar universidad"
+              onClick={goToDetails}
+              className="text-blue-600 hover:text-blue-700 transition-colors p-1 rounded hover:bg-blue-50 text-sm font-medium"
+              title="Ver detalles"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                />
-              </svg>
+              Ver detalles
             </button>
-          )}
+            {isAdmin && (
+              <button
+                onClick={handleEdit}
+                className="text-blue-500 hover:text-blue-700 transition-colors p-1 rounded hover:bg-blue-50"
+                title="Editar universidad"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 }
-

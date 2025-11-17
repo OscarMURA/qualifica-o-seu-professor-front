@@ -15,6 +15,11 @@ export interface UpdateUniversityData {
 }
 
 export const universitiesService = {
+  async list(): Promise<University[]> {
+    const response = await api.get<University[]>(API_CONFIG.ENDPOINTS.UNIVERSITIES);
+    return response.data;
+  },
+
   async create(data: CreateUniversityData): Promise<University> {
     const response = await api.post<University>(
       API_CONFIG.ENDPOINTS.UNIVERSITIES,
@@ -38,4 +43,3 @@ export const universitiesService = {
     return response.data;
   },
 };
-

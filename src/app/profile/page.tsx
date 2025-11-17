@@ -165,7 +165,7 @@ export default function ProfilePage() {
                       Aún no has realizado ningún comentario
                     </p>
                     <Button
-                      onClick={() => router.push("/profesores")}
+                      onClick={() => router.push("/professors")}
                       size="sm"
                       className="w-full mt-3"
                     >
