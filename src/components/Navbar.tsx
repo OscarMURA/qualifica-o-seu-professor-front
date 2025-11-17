@@ -57,6 +57,12 @@ export default function Navbar() {
                 >
                   Universidades
                 </button>
+                <button
+                  onClick={() => navigateTo("/profile")}
+                  className="text-slate-700 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Mi Perfil
+                </button>
                 
                 {/* User Info */}
                 <div className="flex items-center space-x-3 border-l border-slate-200 pl-4 ml-2">
@@ -180,6 +186,12 @@ export default function Navbar() {
                 className="text-slate-700 hover:text-blue-500 hover:bg-slate-100 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
               >
                 Universidades
+              </button>
+              <button
+                onClick={() => navigateTo("/profile")}
+                className="text-slate-700 hover:text-blue-500 hover:bg-slate-100 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
+              >
+                Mi Perfil
               </button>
               <div className="pt-2 mt-2 border-t border-slate-200">
                 <Button
