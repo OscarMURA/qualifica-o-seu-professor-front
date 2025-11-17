@@ -8,10 +8,14 @@ import {
   UniversityCard,
 } from "@/components/universities";
 import { API_CONFIG } from "@/config/api";
+import { useAuth } from "@/context/useAuth";
 import { University } from "@/types";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UniversitiesPage() {
+  const router = useRouter();
+  const { user } = useAuth();
   const [universities, setUniversities] = useState<University[]>([]);
   const [filteredUniversities, setFilteredUniversities] = useState<University[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,6 +23,7 @@ export default function UniversitiesPage() {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
+  const isAdmin = user?.role === "admin";
 
   useEffect(() => {
     fetchUniversities();
@@ -106,13 +111,37 @@ export default function UniversitiesPage() {
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
-            Lista de Universidades
-          </h1>
-          <p className="text-slate-600 text-lg">
-            Explora todas las universidades disponibles en nuestra plataforma
-          </p>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
+              Lista de Universidades
+            </h1>
+            <p className="text-slate-600 text-lg">
+              Explora todas las universidades disponibles en nuestra plataforma
+            </p>
+          </div>
+          {isAdmin && (
+            <Button
+              onClick={() => router.push("/universities/create")}
+              size="lg"
+              className="whitespace-nowrap"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Crear Universidad
+            </Button>
+          )}
         </div>
 
         {/* Search Bar */}
