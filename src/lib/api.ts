@@ -1,6 +1,6 @@
-import axios, { AxiosError } from "axios";
 import { API_CONFIG } from "@/config/api";
 import type { ApiError } from "@/types";
+import axios, { AxiosError } from "axios";
 
 export const api = axios.create({
   baseURL: API_CONFIG.BASE_URL,
@@ -31,8 +31,14 @@ api.interceptors.response.use(
   (error: AxiosError<ApiError>) => {
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+        // Solo redirigir si NO estamos en las páginas de autenticación
+        const currentPath = window.location.pathname;
+        const isAuthPage = currentPath === "/login" || currentPath === "/signup";
+        
+        if (!isAuthPage) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        }
       }
     }
     return Promise.reject(error);
