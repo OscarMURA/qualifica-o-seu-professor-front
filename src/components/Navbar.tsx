@@ -63,6 +63,14 @@ export default function Navbar() {
                 >
                   Mi Perfil
                 </button>
+                {user?.role === "admin" && (
+                  <button
+                    onClick={() => navigateTo("/admin")}
+                    className="text-purple-600 hover:text-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Admin
+                  </button>
+                )}
                 
                 {/* User Info */}
                 <div className="flex items-center space-x-3 border-l border-slate-200 pl-4 ml-2">
@@ -205,6 +213,14 @@ export default function Navbar() {
               >
                 Mi Perfil
               </button>
+              {user?.role === "admin" && (
+                <button
+                  onClick={() => navigateTo("/admin")}
+                  className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
+                >
+                  Dashboard Admin
+                </button>
+              )}
               <div className="pt-2 mt-2 border-t border-slate-200">
                 <Button
                   onClick={handleLogout}

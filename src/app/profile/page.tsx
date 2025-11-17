@@ -132,13 +132,36 @@ export default function ProfilePage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Configuración de Cuenta</CardTitle>
+                <CardTitle>Acciones</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-3">
+                <Button
+                  onClick={() => router.push("/profile/comments")}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Ver Mis Comentarios
+                </Button>
+                <Button
+                  onClick={() => router.push("/settings")}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Configuración
+                </Button>
+                {profile.role === "admin" && (
+                  <Button
+                    onClick={() => router.push("/admin")}
+                    variant="outline"
+                    className="w-full border-purple-300 text-purple-600 hover:bg-purple-50"
+                  >
+                    Dashboard Admin
+                  </Button>
+                )}
                 <Button
                   onClick={handleLogout}
                   variant="outline"
-                  className="text-red-600 border-red-300 hover:bg-red-50"
+                  className="w-full text-red-600 border-red-300 hover:bg-red-50"
                 >
                   Cerrar Sesión
                 </Button>
@@ -158,6 +181,17 @@ export default function ProfilePage() {
                     {stats.totalComments}
                   </div>
                 </div>
+
+                {stats.totalComments > 0 && (
+                  <Button
+                    onClick={() => router.push("/profile/comments")}
+                    size="sm"
+                    className="w-full"
+                    variant="outline"
+                  >
+                    Ver Todos
+                  </Button>
+                )}
 
                 {stats.totalComments === 0 && (
                   <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
