@@ -13,6 +13,50 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+html[data-theme="dark"] {
+  --color-background: #020617;
+  --color-foreground: #e5e7eb;
+  --color-primary: #60a5fa;
+  --color-primary-light: #93c5fd;
+}
+
+html[data-theme="dark"] body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Overrides b��sicos para modo oscuro aprovechando clases utilitarias */
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-slate-50,
+html[data-theme="dark"] .bg-blue-50,
+html[data-theme="dark"] .bg-indigo-50 {
+  background-color: #020617 !important;
+}
+
+html[data-theme="dark"] .text-slate-800,
+html[data-theme="dark"] .text-slate-700,
+html[data-theme="dark"] .text-slate-600 {
+  color: #e5e7eb !important;
+}
+
+html[data-theme="dark"] .text-slate-500 {
+  color: #9ca3af !important;
+}
+
+html[data-theme="dark"] .border-slate-200 {
+  border-color: #1f2937 !important;
+}
+
+html[data-theme="dark"] .shadow-sm,
+html[data-theme="dark"] .shadow-md,
+html[data-theme="dark"] .shadow-lg {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
+}
+
+html[data-theme="dark"] .bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, #020617, #020617) !important;
+}
+
 /* Animaciones personalizadas */
 @keyframes kenBurns {
   0% {
