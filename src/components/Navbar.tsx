@@ -22,6 +22,12 @@ export default function Navbar() {
 
     setTheme(initial);
     document.documentElement.setAttribute("data-theme", initial);
+    // IMPORTANTE: Aplicar TAMBIÉN la clase 'dark' para Tailwind CSS
+    if (initial === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -30,6 +36,12 @@ export default function Navbar() {
       const next: Theme = prev === "dark" ? "light" : "dark";
       localStorage.setItem("theme", next);
       document.documentElement.setAttribute("data-theme", next);
+      // IMPORTANTE: Aplicar TAMBIÉN la clase 'dark' para Tailwind CSS
+      if (next === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
       return next;
     });
   };
@@ -50,10 +62,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          <div className="shrink-0 flex items-center">
             <button
               onClick={() => navigateTo("/")}
-              className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent hover:from-blue-600 hover:to-indigo-600 transition-all"
+              className="text-2xl font-bold bg-linear-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent hover:from-blue-600 hover:to-indigo-600 transition-all"
             >
               Califica tu Profesor
             </button>
