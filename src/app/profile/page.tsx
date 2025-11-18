@@ -82,8 +82,8 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-slate-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-slate-900">Mi Perfil</h1>
-          <p className="text-slate-600 mt-1">Información de tu cuenta y estadísticas</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Mi Perfil</h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">Información de tu cuenta y estadísticas</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -94,14 +94,14 @@ export default function ProfilePage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Nombre</label>
-                  <p className="mt-1 text-slate-900 text-lg">{profile.name}</p>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Nombre</label>
+                  <p className="mt-1 text-slate-900 dark:text-white text-lg">{profile.name}</p>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Email</label>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
                   <div className="mt-1 flex items-center gap-2">
-                    <p className="text-slate-900">{profile.email}</p>
+                    <p className="text-slate-900 dark:text-white">{profile.email}</p>
                     {profile.isEmailVerified ? (
                       <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
                         Verificado
@@ -115,17 +115,17 @@ export default function ProfilePage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Rol</label>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Rol</label>
                   <div className="mt-1">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 rounded-full text-sm font-medium">
                       {profile.role === "admin" ? "Administrador" : "Estudiante"}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Miembro desde</label>
-                  <p className="mt-1 text-slate-900">{formatDate(profile.createdAt)}</p>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Miembro desde</label>
+                  <p className="mt-1 text-slate-900 dark:text-white">{formatDate(profile.createdAt)}</p>
                 </div>
               </CardContent>
             </Card>
