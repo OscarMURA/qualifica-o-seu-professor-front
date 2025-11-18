@@ -3,7 +3,7 @@ import type { Comment, CreateCommentDto, UpdateCommentDto } from "@/types/commen
 
 export const getMyComments = async (): Promise<Comment[]> => {
   const response = await api.get<Comment[]>("/comments/me");
-  return response.data;
+  return response.data || [];
 };
 
 export const updateComment = async (id: string, data: UpdateCommentDto): Promise<Comment> => {

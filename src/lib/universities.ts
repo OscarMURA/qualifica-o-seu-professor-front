@@ -42,4 +42,8 @@ export const universitiesService = {
     );
     return response.data;
   },
+
+  async remove(id: string): Promise<void> {
+    await api.delete(`${API_CONFIG.ENDPOINTS.UNIVERSITIES}/${id}`);
+  },
 };

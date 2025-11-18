@@ -104,12 +104,12 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-8">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Configuración</h1>
-            <p className="text-slate-600 mt-1">Gestiona tu cuenta y preferencias</p>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Configuración</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">Gestiona tu cuenta y preferencias</p>
           </div>
           <Button onClick={() => router.push("/profile")} variant="outline">
             Volver al Perfil
@@ -141,10 +141,13 @@ export default function SettingsPage() {
                   disabled={loading.profile}
                 />
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Email</label>
-                  <p className="mt-1 text-slate-900 bg-slate-50 p-2 rounded border border-slate-200">{user.email}</p>
-                  <p className="text-xs text-slate-500 mt-1">Contacta a un administrador para cambiar tu email</p>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
+                  <p className="mt-1 text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800 p-2 rounded border border-slate-200 dark:border-slate-700">{user.email}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Contacta a un administrador para cambiar tu email</p>
                 </div>
+                <Button type="submit" disabled={loading.profile}>
+                  {loading.profile ? "Guardando..." : "Actualizar Perfil"}
+                </Button>
               </form>
             </CardContent>
           </Card>
@@ -194,7 +197,7 @@ export default function SettingsPage() {
               <CardTitle className="text-red-600">Zona de Peligro</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
                 Una vez eliminada tu cuenta, no hay vuelta atrás. Por favor, está seguro.
               </p>
               {errors.delete && (
