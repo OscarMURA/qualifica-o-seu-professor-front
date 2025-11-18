@@ -2,7 +2,14 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, create a `.env.local` file with your configuration:
+
+```
+PORT=3000
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -19,6 +26,20 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Environment variables
+
+- `PORT`: the port used by the Next.js dev/prod server. Default here is `3000`.
+- `NEXT_PUBLIC_API_URL`: the backend API base URL (default `http://localhost:3001/api`). This is exposed to the browser.
+
+## Professors module
+
+- Public
+  - `/professors`: list with search and university filter; shows name, university and average rating.
+  - `/professors/[id]`: detail with full info, average rating, comments list and comment form (when authenticated).
+- Admin
+  - `/admin/professors/new`: create a professor (name, department, university).
+  - `/admin/professors/[id]/edit`: edit or delete an existing professor.
 
 ## Learn More
 

@@ -5,6 +5,7 @@ export interface User {
   email: string;
   name: string;
   role: UserRole;
+  isEmailVerified?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -17,13 +18,26 @@ export interface LoginCredentials {
 export interface RegisterData {
   email: string;
   password: string;
-  name: string;
+  name?: string;
+  fullName?: string;
   role?: UserRole;
 }
 
 export interface AuthResponse {
   token?: string;
   accessToken?: string;
+  user: User;
+  emailVerified?: boolean;
+  message?: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  user: User;
+}
+
+export interface VerifyEmailResponse {
+  message: string;
   user: User;
 }
 
