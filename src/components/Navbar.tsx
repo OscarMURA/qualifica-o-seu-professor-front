@@ -65,7 +65,7 @@ export default function Navbar() {
           <div className="shrink-0 flex items-center">
             <button
               onClick={() => navigateTo("/")}
-              className="text-2xl font-bold bg-linear-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent hover:from-blue-600 hover:to-indigo-600 transition-all"
+              className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-300 dark:hover:to-indigo-300 transition-all"
             >
               Califica tu Profesor
             </button>

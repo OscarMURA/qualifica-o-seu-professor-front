@@ -1,8 +1,8 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@variant dark (&:where(.dark, .dark *));
-
-@theme {
+:root {
   --color-background: #f8fafc;
   --color-foreground: #334155;
   --color-primary: #3b82f6;
