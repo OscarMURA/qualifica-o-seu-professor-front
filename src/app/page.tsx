@@ -13,9 +13,9 @@ export default function Home() {
     <main className="min-h-[calc(100vh-4rem)] bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-4rem)]">
         {/* Contenido Izquierda */}
-        <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16 xl:p-24 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16 xl:p-24 bg-linear-to-br from-blue-50 via-white to-indigo-50">
           <div className="max-w-xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-linear-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
               Califica a tu Profesor
             </h1>
             <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
@@ -92,7 +92,7 @@ export default function Home() {
                       <h3 className="text-lg font-semibold text-slate-800">Mis Evaluaciones</h3>
                       <p className="text-slate-600 text-sm">Revisa tus calificaciones anteriores</p>
                     </div>
-                    <Button onClick={() => router.push("/mis-evaluaciones")} size="sm" variant="outline">
+                    <Button onClick={() => router.push("/profile/comments")} size="sm" variant="outline">
                       Ver
                     </Button>
                   </div>
@@ -118,7 +118,7 @@ export default function Home() {
           </div>
           
           {/* Overlay con gradiente animado */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 animate-pulse-slow lg:rounded-l-[3rem]"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-blue-500/10 to-indigo-500/10 animate-pulse-slow lg:rounded-l-[3rem]"></div>
           
           {/* Elementos flotantes decorativos */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none lg:rounded-l-[3rem]">

@@ -43,10 +43,10 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-          <p className="mt-4 text-slate-600">Cargando dashboard...</p>
+          <p className="mt-4 text-slate-600 dark:text-slate-400">Cargando dashboard...</p>
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
 
   if (error || !stats) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <Card className="max-w-md">
           <CardContent>
             <div className="text-center py-6">

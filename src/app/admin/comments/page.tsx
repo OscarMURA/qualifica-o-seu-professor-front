@@ -34,9 +34,7 @@ export default function AdminCommentsPage() {
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
-    // Wait a bit for store to rehydrate
     const timer = setTimeout(() => {
-      setAuthChecked(true);
       if (!isAuthenticated) {
         router.push("/login");
         return;
@@ -45,11 +43,14 @@ export default function AdminCommentsPage() {
         router.push("/");
         return;
       }
-      loadComments();
-    }, 100);
+      if (!authChecked) {
+        setAuthChecked(true);
+        loadComments();
+      }
+    }, 50);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isAuthenticated, user, authChecked, router]);
 
   const loadComments = async () => {
     try {
