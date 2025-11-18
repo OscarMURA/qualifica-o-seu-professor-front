@@ -93,12 +93,12 @@ export default function MyCommentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Mis Comentarios</h1>
-            <p className="text-slate-600 mt-1">Gestiona todos tus comentarios</p>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Mis Comentarios</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">Gestiona todos tus comentarios</p>
           </div>
           <Button onClick={() => router.push("/profile")} variant="outline">
             Volver al Perfil
@@ -130,7 +130,7 @@ export default function MyCommentsPage() {
                       <CardTitle className="text-lg">
                         {comment.professor?.name || "Profesor"}
                       </CardTitle>
-                      <p className="text-sm text-slate-500 mt-1">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                         {comment.professor?.department || "Departamento no especificado"}
                       </p>
                     </div>
@@ -152,12 +152,12 @@ export default function MyCommentsPage() {
                       <textarea
                         value={editForm.content}
                         onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
-                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full p-3 border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         rows={4}
                       />
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
-                          <label className="text-sm font-medium text-slate-700">Rating:</label>
+                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Rating:</label>
                           <Input
                             type="number"
                             min="1"
@@ -179,7 +179,7 @@ export default function MyCommentsPage() {
                     </div>
                   ) : (
                     <div>
-                      <p className="text-slate-700 mb-4">{comment.content}</p>
+                      <p className="text-slate-700 dark:text-slate-300 mb-4">{comment.content}</p>
                       <div className="flex gap-2">
                         <Button size="sm" variant="outline" onClick={() => handleEdit(comment)}>
                           Editar

@@ -130,12 +130,12 @@ export default function AdminUsersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Gestión de Usuarios</h1>
-            <p className="text-slate-600 mt-1">Busca y administra usuarios del sistema</p>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Gestión de Usuarios</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">Busca y administra usuarios del sistema</p>
           </div>
           <Button onClick={() => router.push("/admin")} variant="outline">
             Volver al Dashboard
@@ -181,14 +181,14 @@ export default function AdminUsersPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-700">ID</label>
-                  <p className="mt-1 text-xs text-slate-500 font-mono break-all bg-slate-50 p-2 rounded">
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">ID</label>
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 font-mono break-all bg-slate-50 dark:bg-slate-800 p-2 rounded">
                     {selectedUser.id}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Fecha de Registro</label>
-                  <p className="mt-1 text-slate-900">{formatDate(selectedUser.createdAt)}</p>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Fecha de Registro</label>
+                  <p className="mt-1 text-slate-900 dark:text-slate-100">{formatDate(selectedUser.createdAt)}</p>
                 </div>
               </CardContent>
             </Card>
@@ -212,11 +212,11 @@ export default function AdminUsersPage() {
                   disabled={loading}
                 />
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Rol</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Rol</label>
                   <select
                     value={editForm.role}
                     onChange={(e) => setEditForm({ ...editForm, role: e.target.value as "student" | "admin" })}
-                    className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-2 border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     disabled={loading}
                   >
                     <option value="student">Estudiante</option>

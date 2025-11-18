@@ -17,7 +17,7 @@ interface AuthContext {
  */
 export const useAuth = create<AuthContext>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       token: null,
       isAuthenticated: false,
@@ -45,6 +45,12 @@ export const useAuth = create<AuthContext>()(
     }),
     {
       name: "califica-auth-storage",
+      onRehydrateStorage: () => (state) => {
+        // After rehydration, update isAuthenticated based on token presence
+        if (state?.token && state?.user) {
+          state.isAuthenticated = true;
+        }
+      },
     }
   )
 );
