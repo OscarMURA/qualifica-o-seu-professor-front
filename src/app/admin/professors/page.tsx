@@ -29,9 +29,8 @@ export default function AdminProfessorsPage() {
   });
 
   useEffect(() => {
-    // Wait a bit for store to rehydrate
+    // Esperar un momento para que Zustand rehidrate el estado
     const timer = setTimeout(() => {
-      setAuthChecked(true);
       if (!isAuthenticated) {
         router.push("/login");
         return;
@@ -40,11 +39,14 @@ export default function AdminProfessorsPage() {
         router.push("/");
         return;
       }
-      loadData();
-    }, 100);
+      if (!authChecked) {
+        setAuthChecked(true);
+        loadData();
+      }
+    }, 50);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isAuthenticated, user, authChecked, router]);
 
   const loadData = async () => {
     try {

@@ -28,7 +28,6 @@ export default function AdminUniversitiesPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setAuthChecked(true);
       if (!isAuthenticated) {
         router.push("/login");
         return;
@@ -37,11 +36,14 @@ export default function AdminUniversitiesPage() {
         router.push("/");
         return;
       }
-      loadData();
-    }, 100);
+      if (!authChecked) {
+        setAuthChecked(true);
+        loadData();
+      }
+    }, 50);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isAuthenticated, user, authChecked, router]);
 
   const loadData = async () => {
     try {
